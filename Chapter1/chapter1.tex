@@ -1,0 +1,126 @@
+%
+%% ############################################################ %%
+% The First Chapter
+%% ############################################################ %%
+%
+
+
+\section{Introduction}
+
+High temperature conditions are found in industrial environment and improved processes for sensor measurement in these environments are wanted, in order to facilitate process optimizations. What kind of sensor can vary and parameters of interest are for example oxygen concentration, humidity and temperature. In this thesis, the main focus is the oxygen measurement in high temperatures.
+
+In the mining industry, metals in different shapes such as pellets or slabs, are treated in high temperature ovens, where the necessary temperature can reach 1200 $^\circ$C. These ovens are heated with burners, which gives another gas composition than air and the oxygen concentration drops. By measuring the oxygen one can get an understanding of the air to fuel ratio and with this information create a closed loop to optimize the fuel mixture supplied to the burners~\cite{Nicolas},~\cite{Richards},~\cite{USdepartment}.
+
+Today's measurement tools are expensive and they are taking measurements on a fixed location. The environment can vary much between the measurement point and where the material treated in the oven is located. That is where a wireless measurement tool could be effective. It could be well integrated with the material and the control of the oven could then be more effective were it can be controlled depending on the surroundings closer to the material, instead of a fixed point at the edge of the oven.
+
+For the standard measurement equipment, only the actual sensors are exposed inside the oven, and all electronics can be located outside the oven. Then one only has to consider how well the sensor itself can survive in the rough environment. If the measurement tools are integrated with the materials, it also means that the electronics made for the sensor have to survive 1200 $^\circ$C. 
+
+Previous experiments done by the Disire project~\cite{DISIRE2} have been performed to show the feasibility of introducing electronics in hot environments. In these cases, isolation material was formed spherically with an empty chamber in the middle. In the chamber the electronics was placed and surrounded by water. The water then prevent the temperature to rise above 100 $^\circ$C as long as there is water left around the electronics. The amount of water and isolation material needed can then be calculated and simulated, by knowing some thermal properties for the isolation material and the shape of the construction. 
+
+In these cases, isolation material was formed spherically with an empty chamber in the middle. In the chamber the electronics was placed and surrounded by water.
+
+
+The wireless communication is an important key point for this kind of measurement to be effective at all. It is not obvious that a wireless communication in the oven are going to be as stable as it is outside the oven, due to the antenna being close to water, which have bad signal properties. Also all metal located in the oven can be potential sources for causing disturbances on the signals.
+
+
+Tests have been performed to find the best frequency for these environments. As it seems to those tests, lower frequencies are preferable~\cite{DISIRE2}, at least if the antenna is surrounded by pellets.
+
+
+\section{Choice of oxygen sensor}
+
+There are two main problems with most of the sensors on the market when it comes to select an appropriate oxygen sensor. 
+
+Firstly, most of the sensors use a reference gas. The reference gas is in many cases pure air, or at least a gas with a known concentration of oxygen. But in our case, the sensor is going be in an enclosed system when it is in the oven. So for the reference gas, which will have to have a known concentration of oxygen, there will have to be some kind of chamber to hold the reference gas inside the enclosed system. This would complicate the design of the sensor system and take up more space, due to the chamber holding the reference gas.
+
+
+Secondly, is the temperature challenge. Most sensors are not designed to last in temperatures up to 1200 $^\circ$C. To tackle this problem, the air has either to be cooled down before entering the sensor, or a sensor which can handle such conditions have to be selected. High temperature oxygen sensors can be found in autovehicles. In these environments there are rough conditions, but these sensors are heated up by an internal heater element, which are working at about 7 W. To constantly pump 7 W to a heater element drains the batteries used for this type of application too quick. One solution is to let the sensor be heated by the oven, avoiding the need for internal heating.
+
+
+In the Disire report "Sensor technology selection report"~\cite{DISIRE1}, it was suggested the KGZ10 sensor done by Honeywell~\cite{KGZ10} as the most promising sensor for this task. This sensor does not need any reference gas. It pumps in and out oxygen in an integrated chamber and the amount of oxygen is basically described by the time it takes to fill the chamber. The sensor has an operating temperature of 700 $^\circ$C, there is no maximum ratings stated in the datasheet, so if it withstands 1200 $^\circ$C is hard to tell. But the measured gas should not exceed 250 $^\circ$C. So, if this sensor would be used, it would have to be exposed to the oven to reach its operating temperature. But the gas has to be cooled down, which would most likely end up in a fairly complicated mechanical design. Thus, a second pre study performed in the project prior to this thesis work, suggested the use of a lambda sensor, as further described below.
+
+%% ------------------------------------------------------------ %%
+\section{System overview}
+\label{sec_-_}
+%% ------------------------------------------------------------ %%
+
+The oxygen sensor that is used, is a Bosch lambda sensor named LSU 4.9. This sensor is commonly used in cars to measure the lambda value in the exhaust gas coming out directly from the motor and before entering the catalyst. Normally this type of sensor is heated up with a heating element to reach a temperature of about 780$^{\circ}$ degrees. But this heating process drains a lot of power and is not feasible for our system, which runs on batteries. Instead the sensor is heated up by the environment around itself. This will not lead to its perfect operating temperature and therefore it has to take in consider how the lambda value depends on the operating temperature.
+
+
+
+
+The lambda sensor is going to be controlled by electronics involving an 8-bit PIC processor. For the electronics steering the sensor to be able to send out data wireless, it also have to communicate with another electronic circuit designed by Electrotech in Kalix. This circuit then sends data to an antenna sticking into the oven through radio, which collect the data and present it to the user. The protocol used to communicate between the sensor system and the radio system is \ac{i2c}. Figure~\ref{fig:systemoverview} shows a more overall visual view over how the system works.
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width = \textwidth]{Figures/systemoverview.png}
+    \caption{Block diagram illustrating the sensor system.}
+    \label{fig:systemoverview}
+\end{figure}
+
+
+\section{Lambda sensor background}
+
+Most oxygen sensors often use a reference gas to compare the oxygen value, where the reference gas in many cases is pure air. But in our case there is a small closed system, which does not have any access to pure air. This has also been a problem when lambda sensors have been used in cars. Because the air in the engine space often gets contaminated and that gives a reference gas, which is not well compared to pure air. As an option, Bosch designed the LSU 4.9 sensor, which instead of reference air, uses a reference current. This simplifies it in our case, because we don't have to consider the air inside the sensor system. Instead a controller have to be made to control the reference current.
+
+
+When the lambda sensor is used in autovehicles, it helps to control the engine and increase the effectiveness of its combustion. Then, one talks about the lambda-value($\lambda$) and the target is to reach a lambda-value equal to 1. This value is the relation between the optimum and actual air/fuel ratio in kg and the optimum air/fuel ratio is 14.7~\cite{BOSCH}.
+
+
+The lambda sensor does not only react to pure oxygen however, and this may cause some problems. To be able to decide the amount of oxygen, there have to be something known about the other gases mixed with the oxygen. For example carbon monoxide is also highly reactable to the lambda sensor and therefore, it has to be either known how high concentration of it one has, or it has to be avoided. No carbon monoxide appears in a clean combustion though. A clean combustion should create carbon dioxide which is not as reactable to the sensor as carbon monoxide.
+
+Also when this kind of sensor is used in cars, it is heated up by its internal heating element. This element draws 7.5 W nominal power and normally there is a temperature regulator which controls the power consumption for this heating element. First the lambda sensor has to reach above 600 $^\circ$C to even operate, then it is also temperature dependent within its operating temperature. This makes it important to hold a stable temperature, or to be able to correct measurements for temperature deviations.
+
+
+
+
+
+\section{Goals}
+
+The goal is to design a system by electronics with an upper temperature limits of 125 $^{\circ}$C or higher to perform measurements in environments that reach 1200 $^{\circ}$C. The measurements also needs to be sent wireless to the user. In this thesis the main focus is to construct the electronics for an oxygen sensor to handle such conditions. The oxygen sensor itself is already decided which to use and verified that it can handle such conditions.
+
+Also the software to control the sensor has to be designed and all data information that are of interest for the user, have to be sent wirelessly. This is done by the sensor system communicating with a system designed by Electrotech, which sends the data wirelessly on radio to the user.
+
+It is important that the system is power efficient, due to the small amount of power that is available. Because the system is wireless it runs on batteries and the type of battery to choose is decided and tested to perform well in high temperatures.
+
+A further goal of the work, is to perform validation experiments to show the functionality of the proposed system in an industrial setting. The overlying project goal is to enhance process efficiency, thus reducing power consumption and material usage.
+
+
+
+\section{Possible applications}
+
+A product like this is mostly done to fit the mining industry, where it should lower the cost for oxygen measurement. The system should be cheep to build and it shouldn't matter if it gets destroyed and have to be replaced each time they were used. Given that this type of product would exist, also other types of high temperature environments could be possible. These may include heaters in chemical industry or remote heating plants. Here process optimization has the possibility of further energy savings.
+
+For a product like this to be interesting for the mining industry, it has to be robust and precise. It has to give measurement of the oxygen concentration down to a tenth of percent precision. Further, the effect on the process of the introduced material has to be held to a minimum. Firstly, not to introduce impurities in the end product. Secondly, it should not have an environmental impact due to increased waste products if burnt.
+
+
+
+
+%% ------------------------------------------------------------ %%
+%\subsection{First SubSection}
+%\label{subsec_-_}
+%
+%info...
+
+%\subsubsection{First SubSubSection}
+%\label{subsubsec_-_}
+%info...
+
+
+
+
+%% ############################################################ %%
+% \chapter{}
+% \label{ch_-_}
+%% ############################################################ %%
+
+%% ------------------------------------------------------------ %%
+% \section{}
+% \label{sec_-_}
+%% ------------------------------------------------------------ %%
+
+%% ------------------------------------------------------------ %%
+% \subsection{}
+% \label{subsec_-_}
+%

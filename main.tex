@@ -1,0 +1,260 @@
+%% Example document for the eis_msc_thesis document class. Compile with
+%% pdfLaTeX or LaTeX.
+%%
+%% Created: April 7, 2004, by Johan Carlson
+%% Last modified: June 7, 2009, by Johan Carlson
+
+
+%% Pick one of the following depending on the language of the report, and if 
+%% you want twosided or onesided print.
+%% Also change language definition after \begin{document}
+
+% English, twosided
+\documentclass[12pt,a4paper,openright,final,twoside,en]{csee_msc_thesis} 
+
+% English, onesided    
+%\documentclass[12pt,a4paper,openright,final,oneside,en]{csee_msc_thesis}     
+
+% Swedish, twosided
+%\documentclass[12pt,a4paper,openright,final,twoside,sv]{csee_msc_thesis}     
+
+% Swedish, onesided
+%\documentclass[12pt,a4paper,openright,final,oneside,sv]{csee_msc_thesis}     
+
+%%==================================================================
+%% Class options specific to this class
+%%==================================================================
+%%   en, sv  - Swedish or English
+%%   parskip - Use blank row instead of indentation for
+%%             new paragraphs
+%%==================================================================
+
+%% These packages are not required in general,
+%% only for some examples in this document.
+\usepackage{fancybox}
+\usepackage{verbatim}
+
+\usepackage{listings}
+\usepackage{color}
+
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.8,0.4,0}%{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},%{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+%%% 
+% Abbreviations
+%%%
+
+% class `abbrev': abbreviations:
+\DeclareAcronym{dc}{
+  short = DC ,
+  long  = Direct Current ,
+  class = abbrev
+}
+\DeclareAcronym{ac}{
+  short = AC ,
+  long  = Alternative Current ,
+  class = abbrev
+}
+\DeclareAcronym{i2c}{
+  short = I2C ,
+  long  = Inter-Integrated Circuit ,
+  class = abbrev
+}
+\DeclareAcronym{pcb}{
+  short = PCB ,
+  long  = Printed circuit board ,
+  class = abbrev
+}
+\DeclareAcronym{pwm}{
+  short = PWM ,
+  long  = Pulse Width Modulation ,
+  class = abbrev
+}
+\DeclareAcronym{adc}{
+  short = ADC ,
+  long  = Analog-to-digital converter ,
+  class = abbrev
+}
+\DeclareAcronym{ic}{
+  short = IC ,
+  long  = Integrated circuit ,
+  class = abbrev
+}
+\DeclareAcronym{dac}{
+  short = DAC ,
+  long  = Digital-to-analog converter ,
+  class = abbrev
+}
+\DeclareAcronym{mcu}{
+  short = MCU ,
+  long  = MicroController Unit ,
+  class = abbrev
+}
+\DeclareAcronym{dil}{
+  short = DIL ,
+  long  = Dual in-line package ,
+  class = abbrev
+}
+\DeclareAcronym{usart}{
+  short = USART ,
+  long  = Universal Synchronous/Asynchronous Receiver/Transmitter ,
+  class = abbrev
+}
+\DeclareAcronym{sop}{
+  short = SOP ,
+  long  = Small Outline Package ,
+  class = abbrev
+}
+\DeclareAcronym{soic}{
+  short = SOIC ,
+  long  = Small Outline Integrated Circuit ,
+  class = abbrev
+}
+\DeclareAcronym{fvr}{
+  short = FVR ,
+  long  = Fixed Voltage Reference ,
+  class = abbrev
+}
+\DeclareAcronym{pid}{
+  short = PID ,
+  long  = proportional-integral-derivative ,
+  class = abbrev
+}
+\DeclareAcronym{pi}{
+  short = PI ,
+  long  = proportional-integral ,
+  class = abbrev
+}
+\DeclareAcronym{pmos}{
+  short = pMOS ,
+  long  = positive-channel metal-oxide semiconductor ,
+  class = abbrev
+}
+\DeclareAcronym{ltu}{
+  short = LTU ,
+  long  = Lulea University of Technology ,
+  class = abbrev
+}
+
+
+\begin{document}
+
+%%==================================================================
+%% Define variables here
+%%==================================================================
+
+\def\thesistitle{Sensor Integration for High Temperature Measurements}
+\def\theauthor{David\ Ragnarsson}
+\def\theaddress{Lule\r{a} University of Technology\\
+    Dept. of Computer Science, Electrical and Space Engineering \\
+    Div. of EISLAB}
+
+% Define the English abstract
+\def\theabstract{\input{Abstract/abstract.tex}}
+\def\thepreface{\input{Preface/preface.tex}}
+\def\thedate{\today}
+
+% Use this if you want a Swedish abstract
+\def\theswedishabstract{\input{SweAbstract/sweabstract.tex}}
+
+%%==================================================================
+%% Generate preamble pages here (This should not need any changes)
+%%==================================================================
+\startpreamble
+  {\thesistitle}
+  {\theauthor}
+  {\theaddress}
+  {\theabstract}
+  {\thepreface}
+  {\thedate}
+%  {\theswedishabstract} % use this for Swedish abstract, leave empty for English
+
+%%==================================================================
+%% Start including the chapters
+%%==================================================================
+% First argument is the "running titles", second is the chapter name.
+\makechapter{Introduction}{Introduction\label{ch1}}
+\input{Chapter1/chapter1.tex}
+
+\makechapter{Technical description}{Technical description\label{ch2}}
+\input{Chapter2/chapter2.tex}
+
+\makechapter{Method}{Method\label{ch3}}
+\input{Chapter3/chapter3.tex}
+
+\makechapter{Result}{Result\label{ch4}}
+\input{Chapter4/chapter4.tex}
+
+\makechapter{Discussion}{Discussion\label{ch5}}
+\input{Chapter5/chapter5.tex}
+
+
+
+%%==================================================================
+%% Include bibliography references here
+%% Replace the "thesisreferences" with your
+%% own reference database
+%%==================================================================
+\bibliographystyle{unsrt}
+
+\fancyhead[LO]{}%
+\fancyhead[RE]{}%
+\fancyhead[LE]{\thepage}%
+\fancyhead[RO]{\thepage}
+\bibliography{thesisreferences}
+
+
+
+%%==================================================================
+%% Include any appendices here.
+%%==================================================================
+\appendix % This command initializes the appendix part, Don't change!
+
+\makeappendix{Appendix C}{Abbreviation list\label{appC}}
+%Least squares fit of response surface
+%models by multiple linear regression\label{appA}}
+\input{Appendices/appendixC.tex}
+
+\makeappendix{Appendix A}{Full schematic for PCB design\label{appB}}
+%Least squares fit of response surface
+%models by multiple linear regression\label{appA}}
+\input{Appendices/appendixB.tex}
+
+%% Include appendix A, add more if needed
+\makeappendix{Appendix B}{C code designed for PIC18F26K22 controlling LSU4.9\label{appA}}
+%Least squares fit of response surface
+%models by multiple linear regression\label{appA}}
+\input{Appendices/appendixA.tex}
+
+
+
+
+
+\end{document}

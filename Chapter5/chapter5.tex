@@ -1,0 +1,58 @@
+
+\section{Hardware design}
+
+\subsection{PCB design}
+
+From the beginning, the plan was to order two sets of PCBs. When the first design arrived, plans were changed and a second order should only be done if it was really needed. The first design contained some design errors and it had to be some patches to the PCB before it behaved as expected. A number of errors would maybe be decreased if the first design wasn't as rushed as it was. This also showed that even if it would be two iterations of PCB designs, longer time should have been spent to verify the first design's functionality.
+
+To not put a LED on the PCB was a bad idea. It was skipped to hold the current consumption down, but you don't have to use it during the real experiments. It is a good source when debugging and that's why it should be implemented. Also, a LED with low power consumption could have been chosen.
+
+
+\subsection{Functionality}
+
+That the sensor was designed to handle some variance on the operating voltage was good. It made it easy to go from unregulated 3.6 V to 5 V regulated. If the system would have been designed to handle only for example 3.3 V and we would found out in Kalix it was more beneficial to run it on 5 V, due to battery limitations, it could create big troubles if it wasn't that easy to change to 5 V.
+
+
+I still think it would be the best to run the sensor on 3.3 V in the end.  This would simplify the integration part of the sensor and radio unit. Also, I don't see the point of running the sensor on 5 V when it most likely can run on 3.3 V without any trade-offs on functionality, more than it gets a bit worse measuring range. But the range available with 3.3 V is most likely good enough in the oven. It will then not be able to measure lambda value far below 1. But when it is used in this application, it is supposed to measure lambda values from 1 and above. If it goes far below 1, there is a bad combustion in the oven.
+
+A possible rework to improve its functionality on 3.3 V is to have two virtual grounds. One for the sensor and one for the reference points on the instrumentation amplifiers.
+
+When the sensor runs on 5 V, it is good to have the virtual ground in the middle which is 2.5 V. But when it run on 3.3 V, it is preferable to have the virtual ground around 1 V. But for the instrumentation amplifiers it is better to have the reference point in the middle, which is 1.65 V at 3.3 V.
+
+
+
+\section{Thoughts after first test}
+
+Even if the result from the first test left some concerns because of unstable values, it was promising that the most critical functions worked. The fact it did survive all time in the oven and sent data without interruptions was justifying. Also, the stuff that didn't work as expected felt doable to give some rework and patches.
+
+Also when looking into the smaller test, where it made a huge difference on the oxygen concentration depending on which location we were measuring, it felt like the values measured by the lambda sensor could be correct also in the first test. 
+
+It is interesting though that the oxygen level went really high at the end of the experiment and the sensor still worked when it was tested the day after. When the oxygen level did go away like that, the sensor was passing the burner. Either this burner or the environment in the oven caused the sensor to behave in a bad way, or it was a really high oxygen level because of a lot of unburned oxygen in this spot. But the later seems unlikely due to air is added as an oxygen source for the combustion and therefore it wouldn't be able to reach over approximately 21 $\%$ oxygen.
+
+\section{Tests in small oven at Mefos}
+
+\subsection{First test in small oven}
+
+This test was mostly done to give a confirmation that the system worked as expected. The software was heavily reworked since the first test and it worked well on the lab-bench. It did give more stable values than the first test, but it was still some noise.
+
+The actual oxygen level didn't match well at all either. It was roughly a factor 3 off and this left the most concerns if some crucial mistakes were made.
+
+
+\subsection{Second test in small oven}
+
+In this experiment, the pump current regulator has changed from a \ac{pid} controller to a \ac{pi} controller. In theory a \ac{pid} controller should be better, but a \ac{pi} controller is easier to tune. The values in this experiment did not oscillate as much as it did in the previous test. But the oxygen level was still off at the beginning of the measurements.
+
+The reference measurements and the lambda sensor measurements had different locations, after assuming same conditions on both places. To verify this, the reference measurement changed to the same spot as the lambda sensor instead and they now showed the same values.
+
+
+
+\section{Conclusion}
+
+The measurement and encapsulation principle has been shown to work in the intended application. It is clear that a possibility exists to migrate the results from this work into a product. This will aid in process understanding and energy usage optimization.
+
+However, There is still room for improvements on this product. A better current regulator should give a more stable measurement of the oxygen value. But the concept of using instrumentation amplifiers has been a good method. It was useful for saving pins on the \ac{mcu}, its simplicity to use and still get an accurate differential gain. Of course one could change to higher resolutions on the \ac{adc} channels, but in my opinion, 10-bits is enough for this kind of application.
+
+%The DAC could have a higher resolution however. 12-bit is fine, but going up to maybe 14 or 16 could make some difference.
+
+Maybe there should be some more work to run the sensor on a lower voltage, which doesn't seem to be impossible at all. 
+
